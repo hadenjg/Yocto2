@@ -1,0 +1,1870 @@
+Idk what happened to my other text file but its fucking gone lol
+
+
+SO STAERTING OVER
+
+07/23/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+I started a couple of days ago trying to get the raspberry pi yocto project working
+
+https://kickstartembedded.com/2021/12/22/yocto-part-4-building-a-basic-image-for-raspberry-pi/
+
+I started with this guide, but figured out its pretty shitty after while 
+
+i am using the "kirkstone" branch for attempting this on
+
+idk when i'll ever need this but data sheet for raspberry pi
+https://datasheets.raspberrypi.com/rpi3/raspberry-pi-3-b-plus-reduced-schematics.pdf
+
+yocto project for raspberry pi
+https://meta-raspberrypi.readthedocs.io/en/latest/
+
+I ended up just using this for the guide:
+https://meta-raspberrypi.readthedocs.io/en/latest/readme.html
+
+while referencing back to that first guide I aborted from...
+
+Fetch wasn't working so i had to manually downlaod a file 
+
+got it to boot up today on a raspberry pi.
+
+
+
+Things to still learn:
+how do you configure it for specific hardware/devices?  or do you have to have one of those predefined ones???
+
+2.) figure out how to use spi/uart/etc on the raspberry pi to communicate to other devices
+3.) create a new process on the pi
+4.) figure out how to use dbus to communicate between processes.
+
+07/25/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Reading about spi
+https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all
+
+Raspberry pi and spi
+https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all
+
+reading these documents before diving into it
+
+When creating a yocto build, a new recipe is like a new program you are creating.  So you can creeate your own programs and tell them where to live (like in bin)
+So i'm not sure what i'll need to creaet, or where it will need to live.
+
+
+07/29/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ok i read through the documents about spi and i2c.  Now I need to figure out what the next step should be?
+
+Before that, get ssh and wifi working on the device.  That will make it easier so I don't have to keep connecting to it all the time.
+
+1.) Do I order an spi device?  If I do, 
+2.) then how do I wire it up?  
+3.) then write a program to communicate with it from the pin 
+
+ordered the eeprom/spi thing/wires
+
+while waiting for that
+
+we can work on some other stuff
+
+FIRST
+ 
+WIFI and SSH
+
+then:
+whatever else
+
+
+
+Ok getting the interent setup is a little bit harder than I would have anticipated.  BUT, that is ok
+
+instead of googling for solutions (yocto -etc)
+instead need to google for linux solutions and follow those.
+
+HOWEVER 
+
+I will need to figure out how to implement these soutions into yocto, because I don't want to have to redo this shit everytime I flash this raspberry pi.
+
+
+./poky/rasp-pi-build/tmp/pkgdata/raspberrypi3/runtime/wpa-supplicant
+./poky/meta/recipes-connectivity/wpa-supplicant
+./poky/meta/recipes-connectivity/wpa-supplicant/wpa-supplicant
+
+
+save for later:
+https://pinout.xyz/pinout/spi#
+https://raspberrypi.stackexchange.com/questions/136681/raspberry-pi-compute-module-4-spi-bus-not-registering-on-custom-poky-os-yocto
+https://www.allaboutcircuits.com/textbook/direct-current/chpt-5/building-simple-resistor-circuits/
+
+07/31/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+OK I got the pi connected to wifi by following this in step 2
+
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+
+THERE IS NOT A PACKAGE MANAGER INSTALLED ON yocto:
+
+Thus I will need these pacakges:
+vim
+tmux
+git
+openssh-server
+(log into github whenever  Istart coding stuff and download whatever it is I am coding)
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Also need to think about how I will get applications on there.  I guess I can develop straight onto the device....
+and upload to git.
+Then have it checkout the application whenever I need to flash new firmware or something....
+
+I could compile it seperately on my pc? But then I would have to figure out a way to compile it specifically for 
+the raspberry pi device, and how I would transfer it over?
+ssh transfer?
+
+
+OK:
+
+so right now:
+
+TODO:
+
+1.) add these packages to be downloaded onto the system:
+  -vim
+  -tmux
+  -git
+  -openssh-server
+2.) edit wp config thing to be configured to how you want it on boot
+3.) create that script so that when the device boots up it will auto connect to the wifi.
+
+4.) create  a user
+
+08/08/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Created the script now to rebuild the pi image and flash ti/ test it out
+
+rebuilding took a lot klonger than anticpiated.  Will flash it on another day
+
+https://kickstartembedded.com/2021/12/22/yocto-part-4-building-a-basic-image-for-raspberry-pi/
+https://meta-raspberrypi.readthedocs.io/en/latest/readme.html
+https://wiki.yoctoproject.org/wiki/Cookbook:Example:Adding_packages_to_your_OS_image
+https://layers.openembedded.org/layerindex/recipe/300767/
+https://layers.openembedded.org/layerindex/recipe/301002/
+https://layers.openembedded.org/layerindex/recipe/301313/
+https://layers.openembedded.org/layerindex/recipe/300308/
+
+https://stackoverflow.com/questions/60668192/patch-bitbake-to-use-custom-wpa-supplicant-conf
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+https://stackoverflow.com/questions/5905054/how-can-i-recursively-find-all-files-in-current-and-subfolders-based-on-wildcard
+https://www.geeksforgeeks.org/connecting-to-the-internet-using-command-line-in-linux/#
+https://raspberrypi.stackexchange.com/questions/48351/configure-wlan-for-raspberrypi3-using-image-created-with-yocto
+
+08/20/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+::::::::::::TODO::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+1.) Get the raspberry pi to auto connect to the wifi (DoomHose) upon bootup XXXX
+2.) have the ability to ssh into the raspberry pi XXXXXXXXX
+3.) create a user?  Or will it always be root?
+4.) Finally start getting into the spi stuff.
+::::::::::::Nice to have::::::::::::::::::::::::::::::::::::::::::::::::::::
+get my vimrc file on there
+include a layer so i can get tmux as well
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Need to figure out my to dolist again.  This should be copied over everytime
+
+
+hahahahhahahhaha
+
+holy shit it worked.  I didn't need to fuck around with it at all.  It auto connected to the wifi first attempt.....  SICK!
+
+Need to check about ssh?  Did i have that setup to run automatically?
+
+SSH works as well!!!  HELL YEAH!! I ROCK!
+
+
+
+08/20/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+::::::::::::TODO::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+3.) create a user?  Or will it always be root?
+4.) Finally start getting into the spi stuff.
+::::::::::::Nice to have::::::::::::::::::::::::::::::::::::::::::::::::::::
+get my vimrc file on there
+include a layer so i can get tmux as well
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+https://docs.yoctoproject.org/ref-manual/index.html
+
+
+
+adding user
+https://docs.yoctoproject.org/ref-manual/classes.html#useradd
+https://stackoverflow.com/questions/44043874/how-to-add-an-user-and-re-set-the-root-user-in-yocto
+
+
+but skip that for now.
+
+
+
+
+08/28/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+https://learn.adafruit.com/adafruit-cap1188-breakout/pinouts
+
+pinout for the capacitor touch thing.
+
+
+***To boot the chip into spi mode AD needs to be connected to ground
+
+
+https://learning.oreilly.com/library/view/yocto-for-raspberry/9781785281952/ch08.html
+^this may be usefull
+
+
+08/29/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+That spi tools is good and all but I still need to control the gpio so i can get the reset pin.  How does it know what I want to do exactly????
+Need to find another library i guess.
+
+goal for tonight:
+
+1.) Figure out which gpio library to use.
+
+wiringpi seems to be the best one with the most examples, so I will be using that then......
+
+But since it is depreciated and no longer offered as a pre-existing recipe, then I will have to download the unofficial mirror
+https://github.com/WiringPi/WiringPi
+
+SO, I will have to figure out how to integrate this into the yocto build.
+
+1.) How to include a git link into the yocto build
+2.) once I get it onto yocto, where do I put it so that my application can include it into its code?
+
+
+This is also using a library.  Should I create an spi driver myself?  https://embetronicx.com/tutorials/linux/device-drivers/linux-kernel-spi-device-driver-tutorial/
+
+I will add "write a driver" to my list of goals/objectives so that it can be seperate from this.
+
+08/30/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Setup the development enviroment on my VM on my personal PC.  For ease of use. XXXXX
+2.) Get a small example to build on my pc with wiringpi
+
+-----
+Thinking ahead:
+1.) figure out where the my code cshjould live in the yocto build once developed
+2.) figure out where teh exe sholuld live and be run once it is included in the yocto build
+3.) IS ther e a way for me to cross compile the exe and then throw it onto the pi?  or will I have to bujild it on the pi everytime?
+===========================================
+Nice to have:
+1.) get my vimrc file on the yocto build XXXXXXXXXXXXXXXXXXXX
+2.) include the layer that lets me include tmux
+3.) get copy and paste working from host to vm
+4.) get a shared folder up from host to vm
+5.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+============================================
+
+Where should this code be developed?
+
+I guess on the laptop I'm making the builds on, although that isn't as easy as I would like it to be....
+FUCK IT.  I will develop here on a VM..
+
+I'll get into my git and put it on there.
+
+I should also put my build directory in there for yocto.  Or atleast not the exe files, but the conf files and stuff
+
+
+So list of things to do:
+
+1.) Setup the development enviroment on my VM on my personal PC.  For ease of use.
+2.) Figure out where to download wiring pi library to
+3.) figure out where the code cshjould live in the yocto build once developed
+4.) figure out where teh exe sholuld live and be run once it is included in the yocto build
+5.) IS ther e a way for me to cross compile the exe and then throw it onto the pi?  or will I have to bujild it on the pi everytime?
+6.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+
+Too far looking into it at the moment.  Focus one at a time.
+
+
+How to include wiring pi into my build....
+
+How to get cmake into my linux build?
+
+09/06/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get a small example to build on my pc with wiringpi XXXXXXXXX
+
+
+1.) Get Wiring pi onto the raspberry pi
+     -figure out how to git a git repository into the yocto build
+     -create a script to install wiring pi on boot (or add onto the script you already had created)
+
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+2.) get copy and paste working from host to vm
+3.) get a shared folder up from host to vm
+4.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+============================================
+
+
+
+Thoughts:
+
+I will need to develop on the pi.  Since I don't know how to cross compile to that/ do i really want to compile then put onto device everytime if I don't need to?
+
+FAIR ENOUGH
+
+So next steps:
+
+1.) Get Wiring pi onto the raspberry pi
+     -figure out how to git a git repository into the yocto build
+     -create a script to install wiring pi on boot (or add onto the script you already had created)
+
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+
+5.) go through the nice to haves 
+
+
+I mean I could just create a script to clone this.  But there is probably a better way to do this?
+
+
+Well this may be fucked.  
+
+Since I can't install that library probably from yocot and need to do it in the init script, then I cant build my application until after that library as been added.  Which is after everything has already been built....
+
+
+for this application lets just say fuck it, since its kind of a fucked thing.....BUT
+next application that doesn't involve wiring pi.  Lets do it for real for that.
+
+
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+https://blog.mbedded.ninja/programming/embedded-linux/yocto-project/adding-a-custom-app-to-a-yocto-build/
+
+These will be useful in the future...
+
+
+09/16/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+2.) get copy and paste working from host to vm
+3.) get a shared folder up from host to vm
+4.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+============================================
+
+https://www.digikey.com/en/maker/projects/intro-to-embedded-linux-part-6-add-custom-application-to-yocto-build/509191cec6c2418d88fd374f93ea5dda
+https://blog.mbedded.ninja/programming/embedded-linux/yocto-project/adding-a-custom-app-to-a-yocto-build/
+
+
+i would like to put it in /lib/firmware
+
+
+
+Ok this is getting too fucking confusing.  I'm just going to clone it manually on the pi for now and build the application from there lol.
+
+After I finish up with this spi stuff then I will create a "basic" program to include in my raspberry pi build.  just so that i know how to do that
+
+https://stackoverflow.com/questions/67057592/yocto-recipe-to-copy-files-from-private-git-to-rootfs
+https://stackoverflow.com/questions/62635557/add-files-to-system-image-in-yocto
+
+
+
+09/17/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+2.) get copy and paste working from host to vm
+3.) get a shared folder up from host to vm
+4.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+
+May need to eventually redo how I did the wifi stuff since I can't actually connect to the internet (just the local network)
+
+Important docs
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+
+
+before trying to build your layer first run yocto-check-layer script
+
+
+followed the yocto "how to build a layer guide"
+next is to follow hot to build a recipe guide
+
+then I will follow those stack overflow answers
+
+
+09/17/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+2.) get copy and paste working from host to vm
+3.) get a shared folder up from host to vm
+4.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+
+got my recipe and layer created, now I just need to add that post script to run ./build after it has been installed.... or can i do that in the install script?
+i guess i can try in the install script first, and if that doesn't work then i can figure out how to do it in the post install script
+
+
+{time 45 min}
+
+
+09/27/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+2.) get copy and paste working from host to vm
+3.) get a shared folder up from host to vm
+4.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use.
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+
+
+Adding onto the todo:
+
+Figure out how to get virtual box to go full screen without fucking my shit up
+disable auto updates in my debian distro
+
+
+
+10/07/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+2.) get copy and paste working from host to vm
+3.) get a shared folder up from host to vm XXXXXX
+4.) eventually get the raspberry pi yocto building on my vm on my personal pc for ease of use. XXX
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+
+
+OK I fucked everything up when the windows 111 build went through and I don't remember where I was at last since I took so much time off......
+
+New priority of what to do:
+
+1.) Get yocto build on my personal computer vm 
+2.) get those yocto files on git
+3.) get yocto build being able to do what it was doing before everything went to shit
+4.) continue working on doing the spi stuff.
+
+
+
+HAHAHAH trying to mount a fucking shared folder like crashed this shit
+fuck virtual box
+moving to vmware
+
+
+0.) download vmware XXXXX
+1.) get iceface and debian 20 on so that I can actually be productive XXXXX
+2.) get vmware up and running 
+  -get vmware tools so that I can get the copy and paste working and shared folder working
+3.) download my vimrc file and get that working
+4.) download my git repo for yocto
+5.) get the yocto buld back to what it was
+6.) download the git repo for wiring pi
+
+
+10/08/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+
+started at like 11:45 so will stop at around 12:45
+
+Got the shared folder working 
+Got the vim rc downloaded 
+Got apt sources list updated to what it should be(since the iso download was from the disk, it wasn't looking at teh debain website)
+
+got git pushing now with ssh key (needed to be cloned by ssh not https)
+
+now need to setup yocto the correct way.  I am missing tools.
+
+https://unix.stackexchange.com/questions/626496/what-is-the-right-way-to-store-bitbake-configuration-under-git
+for submoduling yocto components
+
+
+Tomorrows top tasks:
+1.) get copy and paste working from host to quest vm
+2.) git ignore the files you are not editing XXXXXXXXXXXXXXXXXX
+3.) follow the yocto quick start guide and get something simple building
+4.) make a build for raspberry pi (will need to checkout raspberry pi submodule)
+4.) get wifi back working
+5.) then get wiringpi back to where it was at
+6.) continue to push forward
+
+
+Follow the below to get wifi/packages back on there
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+OK I got the pi connected to wifi by following this in step 2
+
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+
+vim
+tmux
+git
+openssh-server
+
+https://kickstartembedded.com/2021/12/22/yocto-part-4-building-a-basic-image-for-raspberry-pi/
+https://meta-raspberrypi.readthedocs.io/en/latest/readme.html
+https://wiki.yoctoproject.org/wiki/Cookbook:Example:Adding_packages_to_your_OS_image
+https://layers.openembedded.org/layerindex/recipe/300767/
+https://layers.openembedded.org/layerindex/recipe/301002/
+https://layers.openembedded.org/layerindex/recipe/301313/
+https://layers.openembedded.org/layerindex/recipe/300308/
+
+https://stackoverflow.com/questions/60668192/patch-bitbake-to-use-custom-wpa-supplicant-conf
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+https://stackoverflow.com/questions/5905054/how-can-i-recursively-find-all-files-in-current-and-subfolders-based-on-wildcard
+https://www.geeksforgeeks.org/connecting-to-the-internet-using-command-line-in-linux/#
+https://raspberrypi.stackexchange.com/questions/48351/configure-wlan-for-raspberrypi3-using-image-created-with-yocto
+
+
+https://wiki.yoctoproject.org/wiki/Cookbook:Example:Adding_packages_to_your_OS_image
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+https://communities.vmware.com/t5/VMware-Workstation-Player/Guest-Isolation-Lost-After-Upgrade-to-VMWare-17/td-p/2944149
+https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
+
+
+10/08/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+top tasks:
+1.) get copy and paste working from host to quest vm
+3.) follow the yocto quick start guide and get something simple building
+4.) make a build for raspberry pi 
+get those packages badck on 
+4.) get wifi back working
+5.) then get wiringpi back to where it was at
+6.) continue to push forward
+
+
+10/15/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+I got the wifi setup up "Hopefully"
+ran this command "$ bitbake rpi-test-image --runall=fetch"
+
+you will have to run this next 
+bitbake rpi-test-image
+
+successfully built.
+
+tomorrow flash to sd card and see if it st arts up
+
+
+It does not start up.  I fucked something up.  Its probably those symbolic links I created.  I imagine that has something to do with it.
+building a qume emulator, seeing if that runs
+removing the sym links 
+then going to fully clean the project and checkout the poky 
+
+then if that doesn't work.  I may be fucked!
+I'll just have to go back to a standard then build that and see if its still fucked
+then i would be screwed
+
+need to get neovim on here and get that config from work.
+https://community.nxp.com/t5/i-MX-Processors/YOCTO-project-clean/m-p/435833
+
+
+need to clean every build now because i am out of memory lol
+
+this is FUCKED!
+
+Steps
+
+1.) Create build for queme to verify that everything works ok //comment out all the changes you made so you know vanilla it will work
+2.) ^if that works make vanilla raspberry pi build
+3.) then if that works add your changes for wifi
+
+
+will need to add bblayers.conf file the meta rasp pi layer agfain
+
+ok....
+quemux seems to work but its definetly different from what i had done before....
+
+now to try raspberry pi build again with 0 changes 
+
+then to try raspberry pi build with some of the changes.
+
+Holding:
+https://meta-raspberrypi.readthedocs.io/en/latest/readme.html#quick-start
+https://kickstartembedded.com/2021/12/22/yocto-part-4-building-a-basic-image-for-raspberry-pi/
+https://community.nxp.com/t5/i-MX-Processors/YOCTO-project-clean/m-p/435833
+https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
+https://stackoverflow.com/questions/70572088/yocto-wifi-configuration-for-automatic-connection-at-boot-time
+
+
+10/19/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+Multiple days logged on that last one
+
+This one i fiinshed the build last night ()raw without my cahnges for the pi
+will try and see if they run on the pi today
+
+
+
+10/20/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+===========================================
+Need to add to yocto build:
+https://www.electronicwings.com/raspberry-pi/how-to-use-wiringpi-library-on-raspberry-pi
+Need to download wiringPi from git:
+https://github.com/WiringPi/WiringPi
+
+Then need to add a script to run ./build so that it installs the library on initial boot
+===========================================
+https://google.github.io/styleguide/cppguide.html
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+============================================
+
+https://raspberrypi.stackexchange.com/questions/61895/sd-card-showing-as-30-mb-on-a-32-gb-card-cant-format-cant-create-a-partition
+
+
+
+Very cool!  That was indeed the problem....
+
+SO NOW WE ARE BACK IN ACTION
+
+TIme to work on getting the spi stuff working.
+
+
+10/24/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+===========================================
+
+Getting the wiring pi layer defined again.  Need to find those documents I was using the first time.
+
+
+Stopping for now.
+
+Just copied over the bb file and the conf file.  Need to reread these links and figure out what else needs to be added into my build.
+https://blog.mbedded.ninja/programming/embedded-linux/yocto-project/adding-a-custom-app-to-a-yocto-build/
+https://www.digikey.com/en/maker/projects/intro-to-embedded-linux-part-6-add-custom-application-to-yocto-build/509191cec6c2418d88fd374f93ea5dda
+https://stackoverflow.com/questions/67057592/yocto-recipe-to-copy-files-from-private-git-to-rootfs
+https://stackoverflow.com/questions/62635557/add-files-to-system-image-in-yocto
+https://docs.yoctoproject.org/dev-manual/layers.html
+https://docs.yoctoproject.org/bitbake/2.4/bitbake-user-manual/bitbake-user-manual-metadata.html
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+
+
+11/01/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+===========================================
+
+Ok attempted a couple of times and stilll I am unable to get this git repository copied to /home/root
+
+so somethinig is fucked either 
+
+1.) its not being downloaded from git 
+2.) its not being copied fromwhere ever its downloaded to where I want it
+
+SO lets make sure its being downloaded first
+
+
+https://wiki.yoctoproject.org/wiki/Building_your_own_recipes_from_first_principles#Build_an_example_package_based_on_a_git_repository_commit
+https://github.com/DynamicDevices/meta-example/blob/master/recipes-example/bbexample/bbexample_1.0.bb
+
+my search for if or if not it has been downloaded is dumb!
+
+it seems to not have been cloned.....
+
+OK!  fuck this!  going to manually copy these files over for now.  Since I don't want to waste any more time doing this....
+
+https://stackoverflow.com/questions/40722637/how-do-i-write-a-yocto-bitbake-recipe-to-copy-a-directory-to-the-target-root-fil?rq=4
+
+I have spent far too much time on this git shit.... (maybe I can figure it out later if i need to)
+
+
+11/05/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+9.) get neo vim installed
+===========================================
+
+
+Today:
+
+Just get the files to copy over and make sure they exist.  Then do that other project for a little.
+
+
+Figured it out lol
+
+IT was a two part problem.
+
+I was attempting to just bitbake core-image-base
+
+but i needed to bitbake wiringpi 
+
+then the other problem i was running into was i was using 
+
+FILES_${PN} to pacakge my files but the newer versions of yocto use FILES:${PN} as syntax.
+
+Then since it was actually outputing error messages i was ble to get it to atleast build.  I will see if it works or not:
+also needed to add 
+RDEPENDS:${PN} "perl bash"
+
+for the dependancies
+
+
+
+I got it to build correctly, but the package is still not showing up in /home/root/wiringpi
+
+so need to figure out what is going on there....
+
+https://docs.yoctoproject.org/ref-manual/variables.html#term-RDEPENDS
+
+https://docs.yoctoproject.org/dev-manual/new-recipe.html
+
+
+whatever i did fucked my image up 
+
+that last line I added to install that pacakge wiringpi seems to  f'd it.  Need to figuer out how to get it on my shit.
+
+
+11/06/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+9.) get neo vim installed
+===========================================
+
+https://stackoverflow.com/questions/36452798/yocto-rebuild-part-of-project
+
+https://stackoverflow.com/questions/40849843/how-do-i-add-script-files-to-a-raspberry-pi-filesystem-using-a-custom-yocto-reci
+
+Looking through it.  I am coping to the wrong location.
+
+my build directory is (workdirectory) /home/anon/Dev/yocto/rasp-build/tmp/work/all-poky-linux/wiringpi/1.0-r0
+my destination directory is /home/anon/Dev/yocto/rasp-build/tmp/work/all-poky-linux/wiringpi/1.0-r0/image
+
+I want it actually to go else where.  (Where ever the rasppi3build directory is)
+
+so to fix this i have to 
+
+1.) figure out where to tell the files to be copied to.
+
+
+FUCK THIS!  I am moving onto something else
+
+THIS IS REALLY PISSING ME OFF.
+
+Find a different library to use
+
+now i am lost.......
+
+How to figure out where to go from here?
+
+
+NEED TO TAKE A STEP BACK TOMORROW AND FIGURE OUT MY NEXT STEP!
+
+I think I may need to take a few more steps before  I get there.  I may be over my head.
+
+
+https://bookshelf.vitalsource.com/reader/books/978-1-911531-17-3/epubcfi/6/4[%3Bvnd.vst.idref%3Dvst-95b0c521-caed-4aa0-84a2-0f704d37d4d1]!/4/6[24925ed9-bde9-46e6-85cd-455307bbf653]/4/10/2[cf302823-5534-4b71-9790-f5d2aeb29973]/2/2/6/2/4/2/2/2%4050:69
+
+bought this course so might as well do it.
+
+could possibly learn something?
+
+https://www.apriorit.com/dev-blog/195-simple-driver-for-linux-os
+
+from there
+
+
+OK:
+
+take this course.  It should be a decent overview
+then 
+figure out the chips I have.
+Then figure out how to write device drivers for them....
+
+
+11/08/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+9.) get neo vim installed
+===========================================
+
+
+Did a little bit watched both vids
+
+onto the first lab
+
+don't need to order that sensor until way later
+
+going to clean my yocto build but leave the config files there so that I can follow along exactly (except my yocto dist will be slightly different)
+
+
+
+https://bookshelf.vitalsource.com/reader/books/978-1-911531-17-3/epubcfi/6/10[%3Bvnd.vst.idref%3Dvst-73e9c37f-c2ae-43a6-bd94-c2ea9ff96be0]!/4/6[da0d3981-ceda-4bc9-943c-e5fdb3123c67]/4/48/2[0e35e234-5b7c-4cf6-8d17-d1450120c67c]/2/2/2/4/1:137[tor%2Cy:]
+https://www.sparkfun.com/products/15569
+https://pi4j.com/1.4/pins/rpi-3bp.html
+
+
+
+https://www.quora.com/How-do-you-fix-a-USB-drive-after-Linux-has-been-installed-on-it
+
+
+
+11/14/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+9.) get neo vim installed
+===========================================
+
+got linux on its own hard drive.
+moving production to this
+
+
+1.) get neovim setup XXX
+2.) pale moon
+3.) jellyfin/deluge linked to here
+4.) search best shell to use
+5.) steam to work
+
+1.) figure out how to configure palemoon to what you want
+2.) get jellyfin/deluge
+3.)best shell to use
+4.) steam to work
+
+next time actually do the work you are suppose to
+
+
+https://www.alconchoice3.com/existing/UQF2XHYFTL
+contacts^^
+
+
+
+11/15/32-----------
+https://bookshelf.vitalsource.com/reader/books/978-1-911531-17-3/epubcfi/6/10[%3Bvnd.vst.idref%3Dvst-73e9c37f-c2ae-43a6-bd94-c2ea9ff96be0]!/4/6[da0d3981-ceda-4bc9-943c-e5fdb3123c67]/4/66/2[1ba67b31-1168-46e6-a012-a6520751061e]/2/2/2/2/6/1:81[.'%5E)%2C%7D%22]
+
+11/19/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) Get Wiring pi onto the raspberry pi XXX
+     -figure out how to git a git repository into the yocto build XXX
+     -create a script to install wiring pi on boot (or add onto the script you already had created) XXX
+(^ fuck this for now)
+2.) develop application on pi
+3.) test application and redevelop until it works
+4.) once compelete, figure out how to include application code into the yocto build, and have it build automatically
+       -also upload the application to git
+4.) create a custom layer/recipe for a basic application (hello world).
+5.) go through the nice to haves 
+===========================================
+Nice to have:
+0.) copy and paste from host to guest vm in vmware
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+7.) get my vimrc file to download automatically
+8.) learn how to properlly clean my build.  I tried it just now (10/18/23) and it just fucked everything up
+9.) get neo vim installed
+===========================================
+
+IF YOU EVER NEED TO GOOGLE ANYTHING SPECIFIC ABOUT YOCTO...  JUST GO TO THE WEBSITE FIRST AND READ THE MANUAL!
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+
+FLASHING THE DEVICE!!  Coudlnt find shit on google and it was right here in the docs
+===========================================
+
+
+
+got my shit to build!
+
+THANK S TO THE DOCS!
+
+GOOGLE IS NO LONGER MY MAIN SOURCE OF INFO.
+I MUST FIRST SEARCH THE WEBSITE
+
+https://bookshelf.vitalsource.com/reader/books/978-1-911531-17-3/epubcfi/6/10[%3Bvnd.vst.idref%3Dvst-73e9c37f-c2ae-43a6-bd94-c2ea9ff96be0]!/4/6[da0d3981-ceda-4bc9-943c-e5fdb3123c67]/4/62/2[1cdbba1c-a6ff-4cc9-b107-2b1aa14997a0]
+
+
+
+
+
+11/20/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+1.) follow walk through
+https://bookshelf.vitalsource.com/reader/books/978-1-911531-17-3/epubcfi/6/10[%3Bvnd.vst.idref%3Dvst-73e9c37f-c2ae-43a6-bd94-c2ea9ff96be0]!/4/6[da0d3981-ceda-4bc9-943c-e5fdb3123c67]/4/62/2[1cdbba1c-a6ff-4cc9-b107-2b1aa14997a0]
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+IF YOU EVER NEED TO GOOGLE ANYTHING SPECIFIC ABOUT YOCTO...  JUST GO TO THE WEBSITE FIRST AND READ THE MANUAL!
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+
+FLASHING THE DEVICE!!  Coudlnt find shit on google and it was right here in the docs
+===========================================
+side missions:
+1.) change kitty to have ctrl+b to be the change instead of ctr+shift
+2.) create a startup session and have this file open in one of the windows along with top
+3.) Get rid of rid of spell correct for neovim
+4.) figure out a way to ctrl b out of neovim while in kitty
+5.) change neovim colors, not a fan.  to close in color.  Need more contrast
+6.) get pale moon set up and have metger be the default page or one of the default pages
+===========================================
+
+********DO NOT USE THIS OS FOR PERSONAL STUFF
+**STEAM
+**DISCORD
+**GITHUB
+**That should be it
+**NOTHING ELSE SHOULD COME BACK TO ME
+
+FUCK KITTY FOR RIGHT NOW I DON"T GIVE A SHIT
+
+its not worth the hassel i can have tmux working right now without much more work and i am used to it 
+
+right now just figure out how i want it arranged in tmux then give a fuck later about getting kitty to work
+OR DON"T!
+
+
+UART DOESN"T SEEM TO WORK, or atleast with the serial cable from work.  So fuck it!
+instead just do ssh like you were doing before.
+
+rebuilt
+
+fuck this for now
+
+tomorrow:
+flash raspberry pi sd card again
+then boot pi up
+and ssh into it
+
+
+
+11/24/23
+
+i am getting pissed lol
+
+Just go ahead with the class since I am on a timer with that....
+then after that figuer out how to get the wifi working
+
+11/25/23
+
+watched all those videos now actually making changes
+
+11/26/23
+
+created that example kernel module yesterday
+
+just now, flashed the sd card
+
+now to verify that it all works by powering the PI up
+
+
+11/27/23
+
+was able to load the kernel module on the pi
+print k didn't print to the terminal, had to run "dmesg"
+
+"Does a film exist in an empty theater?" - Abel Ferrara
+
+
+$$$$Next time you flash the sd card, make sure you check that the hello kernel
+module was loaded
+
+https://www.youtube.com/watch?v=xEUb1ffCinE
+
+https://bookshelf.vitalsource.com/reader/books/978-1-911531-17-3/epubcfi/6/24[%3Bvnd.vst.idref%3Dvst-d6a132fd-575c-4e7d-a3f5-1799c324f39b]!/4/6[0c57c728-da82-4ab6-bca4-e23b312eae03]/4/198/2[30fdfb3c-de8d-4d09-952f-26ac566cfc58]
+
+
+rememvber the $$$ above
+11/28
+the last thing you did was bitbake core-image-sato
+
+so next day flash this shit to the pi
+
+12/04/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+Day A.) Kernel Module / Device Driver creation
+1.) find a new part that is simpler to work with
+2.) write the hello world kernel module from scratch on your own (with guides to help)
+and implement that.
+3.) Do the simple gpio input output thing on your own without help (other than guides)
+4.) create a module for the simple chip.
+5.) get more complicated chips or chips that communicate in different ways (block/gpio/serial/etc)
+
+Day B.) General Kernel learning and working through examples
+1.) look at this https://linux-kernel-labs.github.io/refs/heads/master/lectures/intro.html
+follow through the labs and reading the lectures.
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+Good resources:
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+chatgpt if you have a specific question.
+https://sysprog21.github.io/lkmpg/#introduction
+===========================================
+Class in the future?:
+https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+===========================================
+side missions:
+3.) Get rid of rid of spell correct for neovim
+===========================================
+Last learned:
+Day A.)
+
+Day B.)
+https://linux-kernel-labs.github.io/refs/heads/master/lectures/intro.html
+Was on Execution contexts in Introduction lecture
+-finish reading that, then go onto next lecture (figure out when to do the labs.  Maybe it says in the lectures when to do it.)
+fork off of this and make your own comits and shit. build the documentation as it says
+https://github.com/linux-kernel-labs/linux
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ DAY B $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+{ (adding this so i can jump to  top of day easily with vim key bindings
+This yocto class is going off the rails a bit and I'm not really learning anything anymore 
+I am just copy and pasting code but I get the main ideas at this point
+
+So I am going to just start writing the code to go for my own device
+
+user space nd kernel space
+
+kernel space is where it actually interacts with the hard ware
+
+user space is the abstracted version of that for the user to talk to hardware with.
+
+
+Possibly trying to learn yocto and linux kernel stuff at the same time is too overwhelming....
+perhaps I should do it one at a time.
+
+https://linux-kernel-labs.github.io/refs/heads/master/index.html
+https://sysprog21.github.io/lkmpg/#where-to-go-from-here
+
+this seems like a good class to learn from doing labs.
+
+From here 
+
+
+
+I pretty much openend a huge can of worms......
+
+I either:
+A.) continue to ignore most of the kernel stuff and keep head down on the module learning side
+B.) jump into this kernel learning stuff and really understand what I am getting into
+C.) do a little bit of A and B
+
+
+OK! That makes sense.....  I will do C.) then
+
+One day one of the things.  The next day, the other...
+
+
+
+So far I learned:
+1.)Kernel module / drivers are loadable extensions of the kernel
+2.) how to implement these and where they live in the yocto space
+3.) the other things (block device vs serial vs gpio writing) etc etc etc...)
+
+What I still need to learn:
+1.) basic understanding of what is actually happening in the kernel
+2.) how to write the kernel module for a device.
+
+But the thing is I am trying to learn about the kernel while and yocto at the same time
+so it needs to be seperated into 2 seperate activities.  I can probably push ahead and ignore
+all my other shit.  And just work o nthe kernel modules.
+
+BUT  I have an itch that I need to understand what I am working with.
+SOOO!!!!  I will do both.  I know I had already said all of this up there, i am jsut 
+reiterating it.
+
+
+
+
+OK I need to take a moment and reorganize my thoughts/what is going on in this txt file.
+
+
+need to signify at start of day which day i will be working on
+
+
+}
+
+{
+12/04/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+Day A.) Kernel Module / Device Driver creation
+https://sysprog21.github.io/lkmpg/#introduction
+following this book
+1.) find a new part that is simpler to work with
+2.) write the hello world kernel module from scratch on your own (with guides to help)
+and implement that.
+3.) Do the simple gpio input output thing on your own without help (other than guides)
+4.) create a module for the simple chip.
+5.) get more complicated chips or chips that communicate in different ways (block/gpio/serial/etc)
+
+Day B.) General Kernel learning and working through examples
+1.) look at this https://linux-kernel-labs.github.io/refs/heads/master/lectures/intro.html
+follow through the labs and reading the lectures.
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+Good resources:
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+chatgpt if you have a specific question.
+https://sysprog21.github.io/lkmpg/#introduction
+===========================================
+Class in the future?:
+https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+===========================================
+side missions:
+3.) Get rid of rid of spell correct for neovim
+===========================================
+Last learned:
+Day A.)
+https://sysprog21.github.io/lkmpg/#introduction
+https://github.com/sysprog21/lkmpg
+
+stopped on make a test directory:
+
+Day B.)
+https://linux-kernel-labs.github.io/refs/heads/master/lectures/intro.html
+Was on Execution contexts in Introduction lecture
+-finish reading that, then go onto next lecture (figure out when to do the labs.  Maybe it says in the lectures when to do it.)
+fork off of this and make your own comits and shit. build the documentation as it says
+https://github.com/linux-kernel-labs/linux
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ DAY A $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+}
+{
+
+ follow some guide to do the kernel module for hello world.
+https://sysprog21.github.io/lkmpg/#introduction
+reading through this.
+
+ok to make this easy on myself.  
+
+I am first going to learn how to make these kernel modules on raspbian
+THEN
+I am going to reproduce it on yocto whenever I figure out how to properly do this.
+
+This is the linux kernel version and the linux kernel header file version i should use
+needed to install raspberrypi-kernel-headers
+linux-headers-6.1.21-v7+
+
+192.168.1.36
+ip address
+
+got github on raspberry pi
+made first commit
+
+all headers that i am using are located here:
+/lib/modules/$(uname -r)/build/include/linux/
+
+}
+
+12/14-16/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+https://sysprog21.github.io/lkmpg/#introduction
+following this book
+1.) find a new part that is simpler to work with
+2.) write the hello world kernel module from scratch on your own (with guides to help)
+and implement that.
+3.) Do the simple gpio input output thing on your own without help (other than guides)
+4.) create a module for the simple chip.
+5.) get more complicated chips or chips that communicate in different ways (block/gpio/serial/etc)
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+IP OF RASPBERRY PI IS 192.168.1.15
+===========================================
+Good resources:
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+chatgpt if you have a specific question.
+
+//the book i am working through
+https://sysprog21.github.io/lkmpg/#introduction
+
+//official documentation on kernel modules
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/modules.rst
+
+//official documentation on make files
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/makefiles.rst
+===========================================
+Class in the future?:
+https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+===========================================
+Last learned:
+https://sysprog21.github.io/lkmpg/#introduction
+https://github.com/sysprog21/lkmpg
+
+stopped on make a test directory:
+===========================================
+
+KEEP ROLLIN ROLLIN ROLLIN
+
+trying to get neovim on pi so that developing will be easier.
+
+
+ended on "4.5 Passing command line arguments to a module"
+on the part the line after hello-5.c
+
+
+12/17/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+https://sysprog21.github.io/lkmpg/#introduction
+following this book
+1.) find a new part that is simpler to work with
+2.) write the hello world kernel module from scratch on your own (with guides to help)
+and implement that.
+3.) Do the simple gpio input output thing on your own without help (other than guides)
+4.) create a module for the simple chip.
+5.) get more complicated chips or chips that communicate in different ways (block/gpio/serial/etc)
+(char vs block device drivers)
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+IP OF RASPBERRY PI IS 192.168.1.15
+===========================================
+Good resources:
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+chatgpt if you have a specific question.
+
+//the book i am working through
+https://sysprog21.github.io/lkmpg/#introduction
+
+//official documentation on kernel modules
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/modules.rst
+
+//official documentation on make files
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/makefiles.rst
+===========================================
+Class in the future?:
+https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+===========================================
+Last learned:
+https://sysprog21.github.io/lkmpg/#introduction
+https://github.com/sysprog21/lkmpg
+
+ended on "4.5 Passing command line arguments to a module"
+on the part the line after hello-5.c
+===========================================
+
+5.6 Device Drivers
+
+
+12/31/23---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+https://sysprog21.github.io/lkmpg/#introduction
+following this book
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+IP OF RASPBERRY PI IS 192.168.1.15
+===========================================
+Good resources:
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+chatgpt if you have a specific question.
+
+//the book i am working through
+https://sysprog21.github.io/lkmpg/#introduction
+
+//official documentation on kernel modules
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/modules.rst
+
+//official documentation on make files
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/makefiles.rst
+===========================================
+Class in the future?:
+https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+===========================================
+
+ended on 6 / 6.1 Character device drivers 
+
+
+01/02/24
+
+6.5 chardev.c
+
+01/03/2024
+
+6.5 line 87
+
+01/04/2024
+
+line 122
+
+01/13/24
+
+01/13/24---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+===========================================
+TO DO:
+https://sysprog21.github.io/lkmpg/#introduction
+following this book
+===========================================
+Nice to have:
+1.) include the layer that lets me include tmux
+5.) get a user profile instead of signing into root everytime
+6.) get a development folder created
+===========================================
+IP OF RASPBERRY PI IS 192.168.1.15
+===========================================
+Good resources:
+https://docs.yoctoproject.org/dev/dev-manual/bmaptool.html
+chatgpt if you have a specific question.
+
+//the book i am working through
+https://sysprog21.github.io/lkmpg/#introduction
+
+//official documentation on kernel modules
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/modules.rst
+
+//official documentation on make files
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/kbuild/makefiles.rst
+
+https://lwn.net/Kernel/LDD3/
+===========================================
+Class in the future?:
+https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+===========================================
+
+on chapter 7 "the /proc file system"
+
+
+01/14/24
+
+get this sensor and write a kernel module for it...
+https://www.adafruit.com/product/3942#technical-details
+https://github.com/tanzilli/hc-sr04
+https://chrizog.com/linux-device-driver-tutorial-ultrasonic-sensor-1
+https://www.sparkfun.com/products/15569
+
+02/05/24
+
+Once work through this tutorial.  Get a yocto build with this setup so that I can build it from 
+yocto and have it run.
+
+get the device file create in proc/devices
+
+02/07/24
+
+right now the tuturoial is having us manually create the proc file.  When in reality this can be added in to the c file itself.  As per that book https://sysprog21.github.io/lkmpg/#introduction section 7
+
+wait until the end and then mess around and add that in, just cause I don't feel like experimenting with it right now
+
+02/12/24
+
+02/15/24
+fucking nvim kept deleting my file as i was working thoruugh the example so i got pissed and downloaded vscode and just ssh'd into the pi instead...
+now that, that's working.  I am going to:
+1.) just test out what the guy created and see if it runs on the pi
+2.) once I get that to work.  I am going to try and develop that other sensor I have and see if I can figure it out with just this sensor being complete as my reference
+3.) 
+
+The falling edge is not being detected...  How to fix this??  it is probably in the circuit somewhere?  Well I guess It should be realizing there is a rising edge?  So why doesn't it see a falling edge?  Unless I fucked the circuit up
+
+DEBUG THIS:
+1.) Make sure the gpio is actually working.  HAVE IT set both pins to HIGH for infinite amount of time.
+
+
+02/19/24 ----------------------------------------------------------------------------------------------------------------------------------
+Got the device driver working and the device reads the sensor information correctly!  So the tutorial worked.
+now I am going to write a device driver for the CAP1188 using i2c then spi
+
+Then I am going to do the block device flash/eeprom thing i have.
+
+Then once I have written all these device drivers.  I will implement them in a yocto build somehow or atleast learn how to do that.
+
+because I don't want to do the yocto stuff now and wipe the harddrive for the raspberry pi. Cause then I'll jsut have to reflash it.
+
+Right now I need to be able to transfer what I learned from the last device driver (the basic ideas)
+then i need to implement communicating over i2c instead.. (and then spi)
+
+https://embetronicx.com/tutorials/linux/device-drivers/i2c-linux-device-driver-using-raspberry-pi/
+
+https://learn.adafruit.com/adafruit-cap1188-breakout/pinouts
+
+and then instead of make files figure out how to use cmake files
+https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/00001620C.pdf
+
+Fuck the other things I posted.  It seems that the i2c device driver is already created (duh) and we just have to read/write to it like its a file....
+ which makes me wonder what writing this device driver must be like?  
+ although that shit is probably provided to us from manufactureres 
+ liek for the ccu like shawn said
+
+ https://elinux.org/Interfacing_with_I2C_Devices
+ https://docs.kernel.org/i2c/writing-clients.html
+https://learn.sparkfun.com/tutorials/i2c/all
+https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/00001620C.pdf
+
+
+https://elinux.org/Interfacing_with_I2C_Devices
+
+04/05/24-------------------------------------------------------------------------------------------------
+
+
+
+OK SINCE I DON"T REMEMBER ANYTHJING
+
+start simple and just create the hello world version of this shit.  Then work on actually implementing the device....
+
+To keep these notes updated... will have to upload them to github or something...
+
+
+05/22/24-------------------------------------------------------------------------------------------------
+
+Ok with the device driver for i2c finished now to get it into yocto
+
+Which I don't remember any of...  So I need a refresher lol
+
+maybe go back through that initial guide to refresh myself and get basic image on sd card.  Then afterwards add the device drivers...
+
+Since I didn't write like a note to my self I don't remember what I  did to this yocto build specifically lol..........
+
+FUCK IT starting from scratch...
