@@ -1868,3 +1868,13 @@ maybe go back through that initial guide to refresh myself and get basic image o
 Since I didn't write like a note to my self I don't remember what I  did to this yocto build specifically lol..........
 
 FUCK IT starting from scratch...
+
+https://stackoverflow.com/questions/18074979/methods-for-speeding-up-build-time-in-a-project-using-bitbake
+
+https://docs.yoctoproject.org/bitbake/2.8/bitbake-user-manual/bitbake-user-manual-ref-variables.html#term-BB_NUMBER_THREADS
+
+https://kickstartembedded.com/2021/12/21/yocto-part-3-build-run-your-first-ever-image/
+
+did the fetch all command now need t obuild example
+
+05/28/24
