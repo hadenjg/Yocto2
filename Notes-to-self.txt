@@ -1877,4 +1877,31 @@ https://kickstartembedded.com/2021/12/21/yocto-part-3-build-run-your-first-ever-
 
 did the fetch all command now need t obuild example
 
-05/28/24
+05/28/24 --------------------------------------------------------------------------------------------
+
+
+fetched and built the rpi image.  Need to now flash it to the sd card and test it out, just to make sure it runs ok.
+
+then I need to make the hello world its own layer for a device driver, and then build that and add it in
+once that works, then add in the i2c one
+
+
+05/29/24 --------------------------------------------------------------------------------------------
+
+COOL!  So I was able to flash the pi and I got it to boot up the rpi test build again..
+
+
+
+So NOW next steps
+
+
+1.) Create a simple hello world device driver for the normal pi build I have (or atleast refresh myself on how I did the first one)
+2.) add that device driver into the yocto build
+3.) build the yocto build
+4.) run and test the yocto build (may have to manually insert the driver?  This may be another step to make it automatic)
+
+^ Once that works then:
+
+1.) add the i2c application that I made into the yocto build
+2.) build
+3.) run and test the yocto build
